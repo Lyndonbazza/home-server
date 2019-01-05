@@ -25,10 +25,12 @@ services:
       - "9090:9090"
       - "9777:9777/udp"
 
-#  memcached:
-#    container_name: dev_memcached_1
-#    image: memcached
-#    restart: always
-#    ports:
-#      - "3306:3306"
-#
+  home-assistant:
+    image: homeassistant/home-assistant
+    volumes:
+      - ./home-assistant:/config
+      - /etc/localtime:/etc/localtime:ro
+    env_file: home-assistant.env
+    network_mode: host
+    ports:
+      - "83:8123"

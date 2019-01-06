@@ -3,22 +3,28 @@ version: '3'
 services:
   plex:
     image: plexinc/pms-docker
+    restart: always
     network_mode: host
     env_file: plex.env
     volumes:
       - ./plex/confif:/config
       - ./plex/transcode:/transcode
-      - ./plex/data:/data
+        #- ./plex/data:/data
+      - /media/usb:/media/usb
+        #- "/media/usb/cartoons/Archer/Season 4/":/config/.kodi/userdata/library
 
   zoneminder:
     image: linuxserver/zoneminder
+    restart: always
     ports:
       - "81:80"
 
   kodi:
     image: linuxserver/kodi-headless
+    restart: always
     volumes:
-      - ./kodi:/config
+      - ./kodi/config:/config/.kodi
+      - /media/usb:/media/usb
     env_file: kodi.env
     ports:
       - "82:8080"
@@ -27,6 +33,7 @@ services:
 
   home-assistant:
     image: homeassistant/home-assistant
+    restart: always
     volumes:
       - ./home-assistant:/config
       - /etc/localtime:/etc/localtime:ro
